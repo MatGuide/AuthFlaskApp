@@ -9,7 +9,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret-key-goes-here'
+app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -110,7 +110,7 @@ def login():
             return redirect(url_for("login"))
 
         user = User.query.filter_by(email=email).first()
-        print(check_password_hash(user.password, password))
+
 
         if user is not None:
             if check_password_hash(user.password, password):
